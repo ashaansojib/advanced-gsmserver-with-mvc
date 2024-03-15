@@ -17,7 +17,9 @@ const demos = require("./routes/demo");
 connectDB();
 
 // middleware
+app.use(express.json());
 app.use(cors());
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -26,6 +28,10 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/services", services);
 app.use("/api/demos", demos);
 
+// by default home server status..
+app.get("/", (req, res) => {
+  res.status(200).json({ success: true, data: "the server status running" });
+});
 app.listen(
   PORT,
   console.log(
