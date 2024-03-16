@@ -1,33 +1,22 @@
-const abcService = require("../models/services");
+const abcService = require('../models/services');
+const asyncHandler = require('../middleware/async');
 // @desc  =  add content
 // @route =  /api/services/
 // access =  privet
-exports.createServices = async (req, res, next) => {
-  try {
-    const createData = await abcService.create(req.body);
-    res.status(201).json(createData);
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
+exports.createServices = asyncHandler(async (req, res, next) => {
+  const createData = await abcService.create(req.body);
+  res.status(201).json(createData);
+});
 
 // @desc = get all services
 // routes = /api/services/
 // access = public
-exports.getServices = async (req, res, next) => {
-  try {
-    const service = await abcService.find();
-    res.status(200).json({ success: true, data: service });
-  } catch (error) {
-    res.status(400).json({ success: false });
-  }
-};
+exports.getServices = asyncHandler(async (req, res, next) => {
+  const service = await abcService.find();
+  res.status(200).json({ success: true, data: service });
+});
 
-exports.getService = async (req, res, next) => {
-  try {
-    const single = await abcService.findById(req.params.id);
-    res.status(200).json({ success: true, data: single });
-  } catch (error) {
-    res.status(400).json({ success: false });
-  }
-};
+exports.getService = asyncHandler(async (req, res, next) => {
+  const single = await abcService.findById(req.params.id);
+  res.status(200).json({ success: true, data: single });
+});
