@@ -5,12 +5,8 @@ const asyncHandler = require("../middleware/async");
 // @route =  /api/services/
 // access =  privet
 exports.createServices = asyncHandler(async (req, res, next) => {
-  try {
-    const createData = await abcService.create(req.body);
-    res.status(201).json(createData);
-  } catch (error) {
-    next(error);
-  }
+  const createData = await abcService.create(req.body);
+  res.status(201).json(createData);
 });
 
 // @desc = get all services
@@ -25,16 +21,12 @@ exports.getServices = async (req, res, next) => {
   }
 };
 
-exports.getService = async (req, res, next) => {
-  try {
-    const single = await abcService.findById(req.params.id);
-    if (!single) {
-      return next(
-        new ErrorResponse(`Services not found with id of ${req.params.id}`, 400)
-      );
-    }
-    res.status(200).json({ success: true, data: single });
-  } catch (error) {
-    next(error);
+exports.getService = asyncHandler(async (req, res, next) => {
+  const single = await abcService.findById(req.params.id);
+  if (!single) {
+    return next(
+      new ErrorResponse(`Services not found with id of ${req.params.id}`, 400)
+    );
   }
-};
+  res.status(200).json({ success: true, data: single });
+});
