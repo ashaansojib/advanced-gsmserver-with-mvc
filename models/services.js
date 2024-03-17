@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const ServicesSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
+    unique: true,
+    required: [true, 'please add a title'],
   },
   category: {
     type: String,

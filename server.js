@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 9988;
 const morgan = require("morgan");
 const colors = require("colors");
 const connectDB = require("./config/db");
+const errorHandler = require("./middleware/error");
 // load env vars
 dotenv.config({ path: "./config/config.env" });
 
@@ -15,18 +16,20 @@ const demos = require("./routes/demo");
 
 // db called
 connectDB();
-
 // middleware
 app.use(express.json());
 app.use(cors());
 
-if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
-}
-
 // mount the routes here
 app.use("/api/services", services);
 app.use("/api/demos", demos);
+
+// error handler called here for show any error
+app.use(errorHandler);
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
 
 // by default home server status..
 app.get("/", (req, res) => {
