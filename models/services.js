@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const ServicesSchema = new mongoose.Schema({
   title: {
@@ -16,9 +17,7 @@ const ServicesSchema = new mongoose.Schema({
   link: {
     type: String,
   },
-  fileName: {
-    type: String,
-  },
+  fileName: String,
   size: {
     type: String,
   },
@@ -35,4 +34,10 @@ const ServicesSchema = new mongoose.Schema({
     type: String,
   },
 });
+ServicesSchema.pre("save", function (next) {
+  console.log(this.title);
+  this.fileName = slugify(this.title, { lower: true });
+  next();
+});
+
 module.exports = mongoose.model("abcService", ServicesSchema);
